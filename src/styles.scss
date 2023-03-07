@@ -14,6 +14,35 @@ $Magnolia: hsl(217, 100%, 97%);
 $Alabaster: hsl(231, 100%, 99%);
 $White: hsl(0, 0%, 100%);
 
+@mixin optionContainer {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@mixin option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  border: 1px solid $Light-Gray;
+  border-radius: 8px;
+  padding: 0.875rem 1rem 1.125rem;
+  cursor: pointer;
+  [class$="name"] {
+    font-weight: 500;
+  }
+  &.selected {
+    background-color: $Magnolia;
+    border: 1px solid $Purplish-blue;
+  }
+  @media (hover: hover) {
+    &:hover {
+      border: 1px solid $Purplish-blue;
+    }
+  }
+}
+
 *,
 *::after,
 *::before,
@@ -23,11 +52,13 @@ input {
   box-sizing: border-box;
   font-family: Ubuntu;
 }
-
 .App {
-  background-color: $Magnolia;
   min-height: 100vh;
+  background-color: $Magnolia;
   color: $Marine-blue;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
@@ -54,7 +85,7 @@ input {
   font-size: 0.875rem;
   font-weight: 700;
   &.current {
-    color: $Purplish-blue;
+    color: $Marine-blue;
     background-color: $Light-blue;
     border: 0;
   }
@@ -62,18 +93,19 @@ input {
 
 .card {
   background-color: $White;
-  margin: -4.5rem 1rem 0;
+  margin: -4.5rem 1rem 7.5rem;
   border-radius: 10px;
   padding: 2rem 1.5rem;
   box-shadow: 0px 25px 40px -20px rgba(0, 0, 0, 0.0951141);
   &__heading {
-    font-weight: 500;
+    font-weight: 700;
   }
   &__desc {
     color: $Cool-Gray;
     font-weight: 300;
     padding: 9px 0 1.375rem;
     line-height: 25px;
+    max-width: 28ch;
   }
 }
 
@@ -98,90 +130,140 @@ input {
 }
 
 .plan {
-  list-style-type: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  @include optionContainer;
   &__icon {
     width: 40px;
     height: 40px;
     margin-top: 3px;
   }
   &__li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.875rem;
-    border: 1px solid $Light-Gray;
-    border-radius: 8px;
-    padding: 0.875rem 1rem 1.125rem;
-    cursor: pointer;
-    @media (hover: hover) {
-      &:hover {
-        background-color: $Magnolia;
-        border: 1px solid $Purplish-blue;
-      }
-    }
+    @include option;
   }
-  &__name {
-    font-weight: 500;
-  }
-  &__price {
-    font-weight: 300;
-    color: $Cool-Gray;
-    padding-top: 7px;
-  }
+
   &__promotion {
     font-weight: 400;
     font-size: 0.75rem;
     padding-top: 3px;
   }
-}
-
-.plan-type {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  margin-top: 1.5rem;
-  background-color: $Magnolia;
-  padding: 0.875rem;
-  border-radius: 8px;
-  font-weight: 500;
-  &__type {
-    &.selected {
-      color: $Cool-Gray;
+  &-length {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+    background-color: $Magnolia;
+    padding: 0.875rem;
+    border-radius: 8px;
+    font-weight: 500;
+    &__name {
+      &.selected {
+        color: $Cool-Gray;
+      }
     }
-  }
-  &__pill {
-    width: 38px;
-    height: 20px;
-    background-color: $Marine-blue;
-    border-radius: 10px;
-    padding: 0.25rem;
-    cursor: pointer;
-    &--circle {
-      width: 12px;
-      height: 12px;
-      background-color: $White;
-      border-radius: 100%;
-      &.yearly {
-        margin-left: auto;
+    &__pill {
+      width: 38px;
+      height: 20px;
+      background-color: $Marine-blue;
+      border-radius: 10px;
+      padding: 0.25rem;
+      cursor: pointer;
+      &--circle {
+        width: 12px;
+        height: 12px;
+        background-color: $White;
+        border-radius: 100%;
+        &.yearly {
+          margin-left: auto;
+        }
       }
     }
   }
 }
 
+.add-ons {
+  @include optionContainer;
+}
+
+.add-on {
+  @include option;
+  padding-left: 0;
+  align-items: center;
+  &__checkbox {
+    position: absolute;
+    opacity: 0;
+  }
+  &__label {
+    padding-left: 52px;
+    margin-left: 0px;
+    position: relative;
+    cursor: pointer;
+  }
+  &__label::before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    border: 1px solid $Light-Gray;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  &__checkbox:checked ~ &__label::before {
+    content: url(../src/assets/images/icon-checkmark.svg);
+    background-color: $Purplish-blue;
+  }
+  &__promotion {
+    margin-left: auto;
+    color: $Purplish-blue;
+    font-size: 0.75rem;
+  }
+}
+
+.summary {
+  background-color: $Alabaster;
+  &__li {
+    @include option;
+    align-items: center;
+    justify-content: space-between;
+    border: 0;
+    &:first-of-type {
+      border-radius: 0;
+      padding-inline: 0;
+      margin-inline: 1rem;
+      border-bottom: 1px solid rgba($Cool-Gray, 0.2);
+    }
+  }
+  &__price {
+    color: $Marine-blue;
+    font-weight: 700;
+  }
+  &__change {
+    padding-top: 0.25rem;
+    color: $Cool-Gray;
+    font-weight: 300;
+    text-decoration: underline;
+  }
+}
+
 .footer {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   padding: 1rem;
   background-color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: auto;
   &__go-back {
     cursor: pointer;
     color: $Cool-Gray;
+    @media (hover: hover) {
+      &:hover {
+        color: $Marine-blue;
+      }
+    }
   }
   &__next-step {
     background-color: $Marine-blue;
