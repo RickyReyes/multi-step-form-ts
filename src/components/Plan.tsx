@@ -1,68 +1,65 @@
-import arcadeIcon from "../assets/images/icon-arcade.svg";
-import advancedIcon from "../assets/images/icon-advanced.svg";
-import proIcon from "../assets/images/icon-pro.svg";
+import { Dispatch, SetStateAction } from "react";
+import { IPlan, ISummary } from "../App";
 
-import { useState } from "react";
+interface PlanProps {
+  planData: IPlan[];
+  summary: ISummary;
+  setSummary: Dispatch<SetStateAction<ISummary>>;
+}
 
-const planData = [
-  {
-    name: "Arcade",
-    icon: arcadeIcon,
-    iconAlt: "arcade membership icon",
-    monthlyPrice: 9,
-    yearlyPrice: 90,
-  },
-  {
-    name: "Advanced",
-    icon: advancedIcon,
-    iconAlt: "advanced membership icon",
-    monthlyPrice: 12,
-    yearlyPrice: 120,
-  },
-  {
-    name: "Pro",
-    icon: proIcon,
-    iconAlt: "pro membership icon",
-    monthlyPrice: 15,
-    yearlyPrice: 150,
-  },
-];
-
-const Plan = () => {
-  const [yearly, setYearly] = useState(false);
-
+const Plan = ({ planData, summary, setSummary }: PlanProps) => {
   return (
     <>
       <ul className="plan">
         {planData.map((plan) => (
-          <li className="plan__li">
+          <li
+            key={plan.name}
+            className={`plan__li ${
+              plan.name === summary.plan.name ? "selected" : ""
+            }`}
+            onClick={() =>
+              setSummary((prev) => ({
+                ...prev,
+                plan: plan,
+              }))
+            }
+          >
             <img className="plan__icon" src={plan.icon} alt={plan.iconAlt} />
             <div>
               <div className="plan__name">{plan.name}</div>
-              <div className="plan__price">
-                ${yearly ? plan.yearlyPrice : plan.monthlyPrice}
+              <div className="plan__description">
+                ${summary.yearly ? plan.yearlyPrice : plan.monthlyPrice}
                 /mo
               </div>
-              {yearly && <p className="plan__promotion">2 months free</p>}
+              {summary.yearly && (
+                <p className="plan__promotion">2 months free</p>
+              )}
             </div>
           </li>
         ))}
       </ul>
-      <section className="plan-type">
-        <p className={`plan-type__type ${!yearly ? "selected" : ""}`}>
+      <section className="plan-length">
+        <p className={`plan-length__name ${!summary.yearly ? "selected" : ""}`}>
           Monthly
         </p>
         <div
-          onClick={() => {
-            yearly ? setYearly(false) : setYearly(true);
-          }}
-          className="plan-type__pill"
+          onClick={() =>
+            setSummary((prevSummary) => ({
+              ...prevSummary,
+              yearly: !prevSummary.yearly,
+            }))
+          }
+          className="plan-length__pill"
         >
           <div
-            className={`plan-type__pill--circle ${yearly ? "yearly" : ""}`}
+            className={`plan-length__pill--circle ${
+              summary.yearly ? "yearly" : ""
+            }`}
           ></div>
         </div>
-        <p className={`plan-type__type ${yearly ? "selected" : ""}`}>Yearly</p>
+        <p className={`plan-length__name ${summary.yearly ? "selected" : ""}`}>
+          Yearly
+        </p>
       </section>
     </>
   );
