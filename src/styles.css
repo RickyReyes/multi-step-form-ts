@@ -218,8 +218,9 @@ input {
 
 .summary {
   background-color: hsl(231, 100%, 99%);
+  border-radius: 8px;
 }
-.summary__li {
+.summary__top {
   display: flex;
   align-items: flex-start;
   gap: 0.875rem;
@@ -231,23 +232,26 @@ input {
   justify-content: space-between;
   border: 0;
 }
-.summary__li [class$=name] {
+.summary__top [class$=name] {
   font-weight: 500;
 }
-.summary__li.selected {
+.summary__top.selected {
   background-color: hsl(217, 100%, 97%);
   border: 1px solid hsl(243, 100%, 62%);
 }
 @media (hover: hover) {
-  .summary__li:hover {
+  .summary__top:hover {
     border: 1px solid hsl(243, 100%, 62%);
   }
 }
-.summary__li:first-of-type {
+.summary__top:hover {
+  border: 0;
+  cursor: default;
+}
+.summary__top:first-of-type {
   border-radius: 0;
   padding-inline: 0;
   margin-inline: 1rem;
-  border-bottom: 1px solid rgba(150, 153, 171, 0.2);
 }
 .summary__price {
   color: hsl(213, 96%, 18%);
@@ -258,6 +262,35 @@ input {
   color: hsl(231, 11%, 63%);
   font-weight: 300;
   text-decoration: underline;
+}
+.summary__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-inline: 1rem;
+  border-top: 1px solid rgba(150, 153, 171, 0.2);
+}
+.summary__add-on {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 400;
+}
+.summary__add-on--name {
+  color: hsl(231, 11%, 63%);
+}
+.summary__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1rem 0;
+}
+.summary__total--label {
+  color: hsl(231, 11%, 63%);
+}
+.summary__total--amount {
+  color: hsl(243, 100%, 62%);
+  font-weight: 700;
 }
 
 .footer {
